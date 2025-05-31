@@ -45,7 +45,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Zapisanie danych
     std::ofstream data_file("signal_data.txt");
     if (data_file.is_open()) {
         for (size_t i = 0; i < signal.size(); ++i) {
@@ -60,7 +59,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Wywolanie gnuplot
     std::string gnuplot_command = "gnuplot -p -e \"plot 'signal_data.txt' with lines title '" + title + "'\"";
     int result = system(gnuplot_command.c_str());
     if (result == 0) {
@@ -70,15 +68,13 @@ int main(int argc, char* argv[]) {
         std::cerr << "Problem z wywolaniem Gnuplot." << std::endl;
     }
 
-    // Oblicz DFT
     std::vector<std::complex<double>> spectrum = dft(signal);
 
-    // Zapisz amplitude widma do pliku
     std::ofstream spectrum_file("dft_spectrum.txt");
     if (spectrum_file.is_open()) {
         for (size_t k = 0; k < spectrum.size(); ++k) {
             double magnitude = std::abs(spectrum[k]);
-            double freq = static_cast<double>(k) * sample_rate / spectrum.size(); // Przyblizona czestotliwosc
+            double freq = static_cast<double>(k) * sample_rate / spectrum.size(); 
             spectrum_file << freq << " " << magnitude << std::endl;
         }
         spectrum_file.close();
@@ -89,17 +85,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Wywolaj Gnuplot do narysowania amplitudy widma DFT
     std::string gnuplot_command_freq = "gnuplot -p -e \"plot 'dft_spectrum.txt' with lines title '" + title_freq + "'\"";
     int result_freq = system(gnuplot_command_freq.c_str());
     if (result_freq != 0) {
         std::cerr << "Problem z wywolaniem Gnuplot do wizualizacji DFT." << std::endl;
     }
 
-    // Oblicz IDFT
     std::vector<double> reconstructed_signal = idft(spectrum);
 
-	// Zapisanie zrekponstruowanego sygnalu do pliku
     std::ofstream idft_file("idft_signal.txt");
     if (idft_file.is_open()) {
         for (size_t i = 0; i < reconstructed_signal.size(); ++i) {

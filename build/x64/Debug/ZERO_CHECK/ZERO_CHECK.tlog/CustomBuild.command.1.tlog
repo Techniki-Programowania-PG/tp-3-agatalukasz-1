@@ -1,0 +1,10 @@
+^C:\USERS\LUK\TP3\BUILD\CMAKEFILES\0C45746F1E9C2A2973F9A50D6C2CDA61\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/luk/tp3 -BC:/Users/luk/tp3/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/luk/tp3/build/signal_project.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

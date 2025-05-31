@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/luk/tp3/build/cmake_install.cmake",
+		"C:/Users/luk/tp3/build/matplotplusplus/cmake_install.cmake",
+		"C:/Users/luk/tp3/build/matplotplusplus/source/cmake_install.cmake",
+		"C:/Users/luk/tp3/build/matplotplusplus/source/3rd_party/cmake_install.cmake",
+		"C:/Users/luk/tp3/build/matplotplusplus/source/matplot/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

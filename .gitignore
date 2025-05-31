@@ -1,0 +1,10 @@
+
+.vs/
+*.suo
+*.user
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.VC.opendb
+
+matplotplusplus/

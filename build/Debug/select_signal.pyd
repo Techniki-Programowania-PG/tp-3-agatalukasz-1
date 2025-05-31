@@ -1,0 +1,61 @@
+import signal_module
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_signal(time, signal, title):
+    plt.figure(figsize=(10, 6))
+    plt.plot(time, signal)
+    plt.title(title)
+    plt.xlabel("Czas [s]")
+    plt.ylabel("Amplituda")
+    plt.grid(True)
+    plt.show()
+
+def plot_spectrum(frequencies, magnitude, title):
+    plt.figure(figsize=(10, 6))
+    plt.plot(frequencies, magnitude)
+    plt.title(title)
+    plt.xlabel("Częstotliwość [Hz]")
+    plt.ylabel("Amplituda")
+    plt.grid(True)
+    plt.show()
+
+signal_functions = {
+    "sin": signal_module.generate_sine,
+    "cos": signal_module.generate_cosine,
+    "square": signal_module.generate_square,
+    "sawtooth": signal_module.generate_sawtooth,
+}
+
+while True:
+    print("Dostępne typy sygnałów: sin, cos, square, sawtooth, lub napisz quit aby wyjsc")
+    choice = input("Wybierz typ sygnału: ").lower()
+
+    if choice == "quit":
+        break
+    elif choice in signal_functions:
+        try:
+            amplitude = float(input("Podaj amplitudę: "))
+            frequency = float(input("Podaj częstotliwość: "))
+            duration = float(input("Podaj czas trwania: "))
+            sample_rate = int(input("Podaj częstotliwość próbkowania: "))
+        except ValueError:
+            print("Nieprawidłowa wartość. Spróbuj ponownie.")
+            continue
+
+        time = np.linspace(0, duration, int(duration * sample_rate), endpoint=False)
+        generator_func = signal_functions[choice]
+        signal = generator_func(amplitude, frequency, duration, sample_rate)
+        plot_signal(time, signal, f"Sygnał {choice.capitalize()} ")
+
+        spectrum = signal_module.dft(signal)
+        magnitude_spectrum = np.abs(spectrum)
+        frequencies = np.fft.fftfreq(len(spectrum), 1/sample_rate)
+        positive_frequencies = frequencies[:len(frequencies)//2]
+        positive_magnitude = magnitude_spectrum[:len(magnitude_spectrum)//2]
+        plot_spectrum(positive_frequencies, positive_magnitude, f"Amplituda Widma DFT Sygnału {choice.capitalize()} ")
+
+        reconstructed_signal = signal_module.idft(spectrum)
+        plot_signal(time, np.real(reconstructed_signal), f"Sygnał {choice.capitalize()} po IDFT ")
+    else:
+        print("Nieznany wybór")
